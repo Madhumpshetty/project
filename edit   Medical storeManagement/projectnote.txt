@@ -1,0 +1,228 @@
+
+						log.info("Press 2 to SearchMedicine ");
+					        log.info("Press 3 to ChangePassword");
+						log.info("Press 4 to AddProduct");
+						log.info("press 5 to DeleteProduct");
+						log.info("Press 6 to PlaceOrder");
+						log.info("Press 7 for payment");
+						log.info("Press 8 to ViewOrder");
+						log.info("press 9 to SendMessage");
+						log.info("Press 10 to Go back to home");
+						log.info("Please enter your choice");
+						log.info("-----------------------");
+
+
+
+
+
+                                            case 1: {
+							log.info("Enter the user Id");
+							usp.setUserId(scanner.nextInt());
+							log.info("Enter the user name");
+							usp.setUserName(scanner.next());
+							log.info("Enter the user Address");
+							usp.setUserAddress(scanner.next());
+							log.info("Enter the pincode");
+							usp.setUserPincode(scanner.nextInt());
+							log.info("Enter the date of birth");
+							usp.setUserDob(Date.valueOf(scanner.next()));
+							log.info("Enter the user Disease");
+							usp.setUserDisease(scanner.next());
+							log.info("Enter the medicine Id");
+							usp.setMedicineId(scanner.nextInt());
+							log.info("Enter the booking date");
+							usp.setUserMedBookingDate(Date.valueOf(scanner.next()));
+							log.info("Enter the user password");
+							usp.setUserPassword(scanner.next());
+							log.info("Enter the booking Id");
+							usp.setUserBookingId(scanner.nextInt());
+							log.info("Enter the mobile number");
+							usp.setUserMobNo(scanner.nextLong());
+							
+							usi.insertUser();
+							break;
+						}
+
+
+                                              case 7:{
+                                                      
+                                                       }
+
+
+                                             case 9: {
+							log.info("Enter the message Id");
+							mspo.setMessageId(scanner.nextInt());
+							log.info("Enter the user Id");
+							mspo.setUserId(scanner.nextInt());
+							log.info("Enter the user name");
+							mspo.setUserName(scanner.next());
+							log.info("Enter the medicine Id");
+							mspo.setMedicineId(scanner.nextInt());
+							log.info("Enter the user message");
+							mspo.setUserMessage(scanner.next());
+
+							usi.sendMessage();
+							log.info("/n ----Message Sent----");
+							break;
+						}
+
+
+
+
+
+
+
+                            insertUser= insert into medicalstoreuserinfo values(?,?,?,?,?,?,?,?,?,?,?)
+                            sendMessage=insert into messageinfo values(?,?,?,?,?,'--')
+                            loginUser=select * from medicalstoreuserinfo where userName=? and userPassword=?
+
+
+
+
+                               
+
+
+                           public static UserDAO insertUser() {
+		UserDAO userDAO = new UserDAOImp();
+		return userDAO;
+	}
+
+	public static UserDAO loginUser() {
+		UserDAO userDAO = new UserDAOImp();
+		return userDAO;
+	}
+
+	public static UserDAO sendMessage() {
+		UserDAO userDAO = new UserDAOImp();
+		return userDAO;
+	}
+
+	public static UserDAO totalAmount() {
+		UserDAO userDAO = new UserDAOImp();
+		return userDAO;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              @Override
+	public void insertUser(int userId, String userName, String userAddress, int userPincode, Date userDob,
+			String userDisease, int medicineId, Date userMedBookingDate, String userPassword, int userBookingId,
+			long userMobNo) {
+		try (Connection conn = DriverManager.getConnection(pro.getProperty("dburl"), pro)) {
+			pstmt = conn.prepareStatement(pro.getProperty("insertUser"));
+			pstmt.setInt(1, userId);
+			pstmt.setString(2, userName);
+			pstmt.setString(3, userAddress);
+			pstmt.setInt(4, userPincode);
+			pstmt.setDate(5, userDob);
+			pstmt.setString(6, userDisease);
+			pstmt.setInt(7, medicineId);
+			pstmt.setDate(8, userMedBookingDate);
+			pstmt.setString(9, userPassword);
+			pstmt.setInt(10, userBookingId);
+			pstmt.setLong(11, userMobNo);
+			pstmt.executeUpdate();
+
+		} catch (Exception e) {
+                e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+						pstmt.close();
+				}
+			} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		
+	}// end of user insert
+
+
+
+
+
+
+          @Override
+	public void sendMessage(int messageId, int userId, String userName, int medicineId, String userMessage) {
+		try (Connection conn = DriverManager.getConnection(pro.getProperty("dburl"), pro)) {
+			pstmt = conn.prepareStatement(pro.getProperty("sendMessage"));
+
+			pstmt.setInt(1, messageId);
+			pstmt.setInt(2, userId);
+			pstmt.setString(3, userName);
+			pstmt.setInt(4, medicineId);
+			pstmt.setString(5, userMessage);
+
+			int rs = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+
+	}
+
+}
+
+
+
+
+
+SERVICE INTERFACE
+
+
+           public void insertUser();
+
+	public void sendMessage();
+
+
+
+
+
+SERVICE  implementation
+
+
+             @Override
+	public void insertUser() {
+		udai.insertUser(UserSPojo.getUserId(), UserSPojo.getUserName(), UserSPojo.getUserAddress(),
+				UserSPojo.getUserPincode(), UserSPojo.getUserDob(), UserSPojo.getUserDisease(),
+				UserSPojo.getMedicineId(), UserSPojo.getUserMedBookingDate(), UserSPojo.getUserPassword(),
+				UserSPojo.getUserBookingId(), UserSPojo.getUserMobNo());
+
+	}
+
+
+@Override
+	public void sendMessage() {
+		udai.sendMessage(MessageSPojo.getMessageId(), MessageSPojo.getUserId(), MessageSPojo.getUserMessage(),
+				MessageSPojo.getMedicineId(), MessageSPojo.getUserMessage());
+
+	}
+
+
+
+
+
+
+
+
